@@ -8,6 +8,7 @@
 #include <godot_cpp/variant/utility_functions.hpp>
 
 #include "openxr_fb_scene_capture_extension_wrapper.h"
+#include "openxr_fb_body_tracking_extension_wrapper.h"
 
 using namespace godot;
 
@@ -16,7 +17,9 @@ void scene_capture_initialize(ModuleInitializationLevel p_level)
 	if (p_level == MODULE_INITIALIZATION_LEVEL_CORE)
 	{
 		ClassDB::register_class<OpenXRFbSceneCaptureExtensionWrapper>();
+		ClassDB::register_class<OpenXRFBBodyTrackingExtensionWrapper>();
 		OpenXRFbSceneCaptureExtensionWrapper::get_singleton()->register_extension_wrapper();
+		OpenXRFBBodyTrackingExtensionWrapper::get_singleton()->register_extension_wrapper();
 	}
 }
 

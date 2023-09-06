@@ -16,3 +16,14 @@ project/android/build
 
 # Editors
 .vscode/
+
+# Binaries
+*.o
+*.os
+*.so
+*.obj
+*.bc
+*.pyc
+*.dblite
+*.pdb
+*.lib
