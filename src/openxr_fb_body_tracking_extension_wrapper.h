@@ -21,15 +21,33 @@ namespace godot {
             std::map<godot::String, bool *> request_extensions;
             static OpenXRFBBodyTrackingExtensionWrapper *singleton;
 
+            EXT_PROTO_XRRESULT_FUNC3(xrCreateBodyTrackerFB, (XrSession), p_session, (const XrBodyTrackerCreateInfoFB *), p_createInfo, (XrBodyTrackerFB *), p_bodyTracker);
+            EXT_PROTO_XRRESULT_FUNC1(xrDestroyBodyTrackerFB, (XRBodyTrackerFB), p_bodyTracker);
+
         protected:
             static void _bind_methods();
 
         public:
+
+            struct Body_Tracker {
+                bool is_initialized = false;
+                XrBodyTrackerFB body_tracker = XR_NULL_HANDLE; // Body tracking handle
+                XrBodyJointLocationFB jointLocations[XR_BODY_JOINT_COUNT_FB];
+                XrBodyJointLocationsFB locations;
+            }
+
             OpenXRFBBodyTrackingExtensionWrapper();
 
             static OpenXRFBBodyTrackingExtensionWrapper* get_singleton();
 
+            void _on_instance_created(uint64_t instance) override;
+
+            void _on_instance_destroyed() override;
+
+            void _on_process() override;
+
             godot::Dictionary _get_requested_extensions() override;
+            
 
             bool is_body_tracking_supported() {
                 return fb_body_tracking_ext;
