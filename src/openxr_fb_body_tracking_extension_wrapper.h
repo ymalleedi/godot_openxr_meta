@@ -22,7 +22,8 @@ namespace godot {
             static OpenXRFBBodyTrackingExtensionWrapper *singleton;
 
             EXT_PROTO_XRRESULT_FUNC3(xrCreateBodyTrackerFB, (XrSession), p_session, (const XrBodyTrackerCreateInfoFB *), p_createInfo, (XrBodyTrackerFB *), p_bodyTracker);
-            EXT_PROTO_XRRESULT_FUNC1(xrDestroyBodyTrackerFB, (XRBodyTrackerFB), p_bodyTracker);
+            EXT_PROTO_XRRESULT_FUNC1(xrDestroyBodyTrackerFB, (XrBodyTrackerFB), p_bodyTracker);
+            EXT_PROTO_XRRESULT_FUNC3(xrLocateBodyJointsFB, (XrBodyTrackerFB), p_bodyTracker, (const XrBodyJointsLocateInfoFB *), p_locateInfo, (XrBodyJointLocationsFB *), p_locations);
 
         protected:
             static void _bind_methods();
@@ -31,10 +32,10 @@ namespace godot {
 
             struct Body_Tracker {
                 bool is_initialized = false;
-                XrBodyTrackerFB body_tracker = XR_NULL_HANDLE; // Body tracking handle
-                XrBodyJointLocationFB jointLocations[XR_BODY_JOINT_COUNT_FB];
+                XrBodyTrackerFB body_tracker_handle = XR_NULL_HANDLE; 
+                XrBodyJointLocationFB joint_locations[XR_BODY_JOINT_COUNT_FB];
                 XrBodyJointLocationsFB locations;
-            }
+            };
 
             OpenXRFBBodyTrackingExtensionWrapper();
 
@@ -44,9 +45,13 @@ namespace godot {
 
             void _on_instance_destroyed() override;
 
+            void _on_state_ready() override;
+
             void _on_process() override;
 
             godot::Dictionary _get_requested_extensions() override;
+
+            Body_Tracker body_tracker;
             
 
             bool is_body_tracking_supported() {
