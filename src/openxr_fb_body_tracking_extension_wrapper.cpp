@@ -43,6 +43,8 @@ void OpenXRFBBodyTrackingExtensionWrapper::_on_state_ready() {
     }
 }
 
+static int run_once = 0;
+
 void OpenXRFBBodyTrackingExtensionWrapper::_on_process() {
     //TODO: Verify if this works...
     uint64_t xr_time = get_openxr_api()->get_next_frame_time();
@@ -54,12 +56,31 @@ void OpenXRFBBodyTrackingExtensionWrapper::_on_process() {
             p_createInfo.type = XR_TYPE_BODY_TRACKER_CREATE_INFO_FB;
             p_createInfo.next = nullptr;
             p_createInfo.bodyJointSet = XR_BODY_JOINT_SET_DEFAULT_FB;
-
+        UtilityFunctions::print("Body Tracker handle before create is: ", (uint64_t) body_tracker.body_tracker_handle);
         XrResult result = xrCreateBodyTrackerFB( (XrSession) get_openxr_api()->get_session(), &p_createInfo, &body_tracker.body_tracker_handle );
         UtilityFunctions::print("The result of creating Body Tracker Handle is: ", result);
+        UtilityFunctions::print("Body Tracker handle after create is: ", (uint64_t) body_tracker.body_tracker_handle);
         if (result == XR_SUCCESS) {
             body_tracker.is_initialized = true;
+            body_tracker.locations.jointLocations = body_tracker.joint_locations;
+            body_tracker.locations.next = nullptr;
+            body_tracker.locations.type = XR_TYPE_BODY_JOINT_LOCATIONS_FB;
+            body_tracker.locations.jointCount = XR_BODY_JOINT_COUNT_FB;
         }
+    }
+
+    if(body_tracker.is_initialized && run_once < 10) {
+        XrBodyJointsLocateInfoFB p_locateInfo;
+            p_locateInfo.type = XR_TYPE_BODY_JOINTS_LOCATE_INFO_FB;
+            p_locateInfo.next = nullptr;
+            p_locateInfo.baseSpace = (XrSpace)xr_play_space;
+            p_locateInfo.time = xr_time;
+
+        XrResult result = xrLocateBodyJointsFB(body_tracker.body_tracker_handle, &p_locateInfo, &body_tracker.locations);
+        UtilityFunctions::print("The result of locating the body joints is: ", result);
+        UtilityFunctions::print("The joint position is: {x} ", body_tracker.joint_locations[0].pose.position.x, "\n {y} ", body_tracker.joint_locations[0].pose.position.y, "\n {z} ", body_tracker.joint_locations[0].pose.position.z);
+
+        run_once++;
     }
     
 }
