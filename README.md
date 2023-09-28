@@ -1,6 +1,6 @@
-# Godot FB Body Tracking Extension Wrapper
+# Godot FB Body Tracking OpenXR Extension Wrapper
 
-Added support for the XR_FB_body_tracking extension.
+Added support for the XR_FB_body_tracking OpenXR extension. Tested with the quest pro and Oculus OpenXR Mobile SDK v56.
 
 # Godot FB Scene Capture OpenXR Extension Wrapper
 
