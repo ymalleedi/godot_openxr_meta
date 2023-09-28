@@ -1,3 +1,7 @@
+# Godot FB Body Tracking Extension Wrapper
+
+Added support for the XR_FB_body_tracking extension.
+
 # Godot FB Scene Capture OpenXR Extension Wrapper
 
 This is an example project showcasing how to implement OpenXR extension wrappers through GDExtensions. It requires the following PR to work: https://github.com/godotengine/godot/pull/68259. After building Godot, godot-headers should be updated following https://github.com/godotengine/godot-headers#updating-headers.
