@@ -17,8 +17,11 @@ void scene_capture_initialize(ModuleInitializationLevel p_level)
 	if (p_level == MODULE_INITIALIZATION_LEVEL_CORE)
 	{
 		ClassDB::register_class<OpenXRFbSceneCaptureExtensionWrapper>();
-		ClassDB::register_class<OpenXRFBBodyTrackingExtensionWrapper>();
 		OpenXRFbSceneCaptureExtensionWrapper::get_singleton()->register_extension_wrapper();
+
+		ClassDB::register_class<OpenXRFBBodyTrackingJointState>();
+		ClassDB::register_class<OpenXRFBBodyTrackingState>();
+		ClassDB::register_class<OpenXRFBBodyTrackingExtensionWrapper>();
 		OpenXRFBBodyTrackingExtensionWrapper::get_singleton()->register_extension_wrapper();
 	}
 }
